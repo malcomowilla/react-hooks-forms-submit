@@ -1,65 +1,70 @@
 import React, { useState } from "react";
 
-function Form(props) {
-  const [firstName, setFirstName] = useState("Sylvia");
-  const [lastName, setLastName] = useState("Woods");
+function Form() {
+  const[firstName, setFirstName] = useState("")
+  const[lastName, setLastName] = useState("")
   const [submittedData, setSubmittedData] = useState([]);
-  const [errors, setErrors] = useState([]);
-
-
-
-
+const[errors, setErrors] = useState([])
 
   function handleFirstNameChange(event) {
-    setFirstName(event.target.value);
+    setFirstName(event.target.value)
   }
-
   function handleLastNameChange(event) {
     setLastName(event.target.value);
   }
-
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    // first name is required
+  function handleSubmit(e) {
+    e.preventDefault()
     if (firstName.length > 0) {
-      const formData = { firstName: firstName, lastName: lastName };
-      const dataArray = [...submittedData, formData];
-      setSubmittedData(dataArray);
-      setFirstName("");
-      setLastName("");
-      setErrors([]);
+      const formData={firstName: firstName, lastName: lastName}
+      const dataArray = [...submittedData, formData]
+      setSubmittedData(dataArray)
+      setFirstName("")
+      setLastName("")
+      setErrors([])
     } else {
-      setErrors(["First name is required!"]);
+      setErrors(["First name is required!"])
     }
+    // const formData = {firstName: firstName, lastName: lastName}
+    // const dataArray =[...submittedData, formData]
+    // setSubmittedData(dataArray)
+    // const formData = {
+    //   firstName: firstName,
+    //   lastName:lastName,
+    // }
+    // props.sendFormDataSomehere(formData)
+    // setFirstName("")
+    // setLastName("")
+
+    setFirstName("")
+    setLastName("")
   }
 
-  const listOfSubmissions = submittedData.map((data, index) => {
-    return (
-      <div key={index}>
-        {data.firstName} {data.lastName}
-      </div>
-    );
-  });
+  const listOfSubmittedData = submittedData.map((data, index)=>{
+    return (<div key={index}>
+      <p>{data.firstName} {data.lastName}</p>
+    </div>)
+  })
+return (
+  <div>
+  <form onSubmit={handleSubmit}>
+    <input type="text" onChange={handleFirstNameChange} value={firstName}></input>
+    <input type="text" onChange={handleLastNameChange} value={lastName}></input>
+    <button type="submit">submit</button>
+    
+  </form>
+  <h3>Submissions</h3>
+  {errors.length > 0 ?
+   errors.map((error, index)=>{
+  return  <p key={index} style={{color: "red"}}>
+      {error}
+    </p>
 
-   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" onChange={handleFirstNameChange} value={firstName} />
-        <input type="text" onChange={handleLastNameChange} value={lastName} />
-        <button type="submit">Submit</button>
-      </form>
-      {errors.length > 0
-      ? errors.map((error, index) => (
-          <p key={index} style={{ color: "red" }}>
-            {error}
-          </p>
-        ))
-      : null}
-      <h3>Submissions</h3>
-      {listOfSubmissions}
-    </div>
-  );
+  }): null}
+    {listOfSubmittedData}
+  </div>
+  
+  
+)
+ 
 }
-
-export default Form;
+export default Form
